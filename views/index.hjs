@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <title>Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:20px; }
+        img{
+            width:100%;
+            border: 3px solid black;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="jumbotron text-center">
+        <h1>Test App</h1>
+
+        <div>
+            Getting started by logging into Office 365
+        </div>
+
+        <div><a class="btn btn-primary btn-lg" href="{{loginUrl}}">Office 365 Log In</a></div>
+    </div>
+
+</div>
+</body>
+</html>

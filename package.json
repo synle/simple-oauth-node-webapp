@@ -1,0 +1,35 @@
+{
+  "name": "office-365-simple-oauth-node-webapp",
+  "version": "1.0.0",
+  "description": "office-365-simple-oauth-node-webapp",
+  "author": "Sy Le",
+  "license": "ISC",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=7.6.0"
+  },
+  "dependencies": {
+    "azure-storage": "^2.6.0",
+    "body-parser": "~1.15.2",
+    "colors": "^1.1.2",
+    "cookie-parser": "~1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
+    "express": "~4.14.0",
+    "express-session": "^1.15.6",
+    "hjs": "~0.0.6",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.1",
+    "moment-timezone": "^0.5.13",
+    "morgan": "^1.7.0",
+    "node-sass-middleware": "^0.11.0",
+    "sequelize": "^3.28.0",
+    "sequelize-simple-adapter": "git+https://github.com/synle/sequelize-simple-adapter.git",
+    "serve-favicon": "~2.3.0",
+    "sqlite3": "^3.1.13",
+    "tedious": "^2.1.1",
+    "unirest": "^0.5.1"
+  },
+  "devDependencies": {}
+}
