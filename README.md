@@ -1,35 +1,34 @@
-# office-365-simple-oauth-node-webapp
+# simple-oauth-node-webapp
 
-### nginx
+### Sample Screenshot:
+![alt text](./screenshots/1.png "Sample Screenshot")
+
+
+## Environment Variable
+Please check env.sh.bak (https://github.com/synle/simple-oauth-node-webapp/blob/master/env.sh.bak) for more information
+
+
+## nginx
 nginx is used here for basic https server...
 
-#### Basic Commands
+### Basic Commands
 ```
 sudo nginx
 sudo nginx -s stop
 ```
 
 
-#### Config Path
+### Config Path
+#### Mac
 ```
-Mac
 /usr/local/etc/nginx/nginx.conf
 ```
 
 
 
-#### Sample nginx config for https
-```
-    # only if needed
-    sudo mkdir -p /var/log/nginx/
-```
+### Sample nginx config for https
 ```
 worker_processes  1;
-
-error_log  /var/log/nginx/error.log;
-#error_log  logs/error.log  notice;
-#error_log  logs/error.log  info;
-#pid        logs/nginx.pid;
 
 events {
     worker_connections  1024;
@@ -57,8 +56,8 @@ http {
         listen       8443;
         server_name  localhost;
         ssl on;
-        ssl_certificate /Users/syle/Documents/_git/_personal/office-365-simple-oauth-node-webapp/cert/server.crt;
-        ssl_certificate_key /Users/syle/Documents/_git/_personal/office-365-simple-oauth-node-webapp/cert/server.key;
+        ssl_certificate ./cert/server.crt;
+        ssl_certificate_key ./cert/server.key;
         location / {
             proxy_pass      http://127.0.0.1:8080;
         }
@@ -68,3 +67,24 @@ http {
     include servers/*;
 }
 ```
+
+
+
+## Screenshots
+![alt text](./screenshots/2.png "Sample Screenshot")
+![alt text](./screenshots/3.png "Sample Screenshot")
+
+
+
+## Sources / References
+### Office 365
+- App Config URL (https://apps.dev.microsoft.com)
+
+### Google
+- Doc (https://developers.google.com/identity/protocols/OAuth2WebServer)
+- Scope (https://developers.google.com/identity/protocols/OAuth2WebServer)
+
+
+
+## Gotcha's
+- Google Refresh Token is only present for the first time user login attempts.

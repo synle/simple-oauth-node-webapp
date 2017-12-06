@@ -1,7 +1,6 @@
 const unirest = require('unirest');
 const _ = require('lodash');
 const moment = require('moment');
-const azure = require('azure-storage');
 
 // other util
 const commonUtil = {
@@ -30,8 +29,6 @@ const commonUtil = {
                 if(error){
                     reject(error)
                 } else{
-                    // console.log('====')
-                    // console.log(JSON.stringify(response.body, null, 4))
                     resolve(response.body);
                 }
             });
@@ -53,22 +50,7 @@ const commonUtil = {
 }
 
 
-// o365 api utils
-const o365 = {
-    getUsersInformation: async (o365AuthToken) => {
-        // https://graph.microsoft.com/v1.0/me
-        return commonUtil.makeO365Call(
-             'get',
-             'https://graph.microsoft.com/v1.0/me',
-             o365AuthToken
-        );
-
-    },
-}
-
-
 // export
 module.exports = {
-    o365,
     commonUtil,
 }

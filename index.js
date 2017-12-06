@@ -11,6 +11,7 @@ const daoUtil = require('./libs/daoUtil');
 
 async function _init(portHttp){
     // init queue and db...
+    console.log('Waiting for ORM to bootstrap...');
     await Promise.all([
         daoUtil.init(),
     ])

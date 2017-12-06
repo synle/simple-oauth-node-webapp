@@ -1,7 +1,7 @@
 {
-  "name": "office-365-simple-oauth-node-webapp",
+  "name": "simple-oauth-node-webapp",
   "version": "1.0.0",
-  "description": "office-365-simple-oauth-node-webapp",
+  "description": "simple-oauth-node-webapp supports Google and Office 365",
   "author": "Sy Le",
   "license": "ISC",
   "scripts": {
@@ -11,7 +11,6 @@
     "node": ">=7.6.0"
   },
   "dependencies": {
-    "azure-storage": "^2.6.0",
     "body-parser": "~1.15.2",
     "colors": "^1.1.2",
     "cookie-parser": "~1.4.3",

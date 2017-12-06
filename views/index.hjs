@@ -22,7 +22,13 @@
             Getting started by logging into Office 365
         </div>
 
-        <div><a class="btn btn-primary btn-lg" href="{{loginUrl}}">Office 365 Log In</a></div>
+        <div>
+            <a class="btn btn-primary btn-lg" href="{{o365LoginUrl}}">Office 365 Log In</a>
+        </div>
+
+        <div style="margin-top:20px;">
+            <a class="btn btn-danger btn-lg" href="{{googleLoginUrl}}">Google Log In</a>
+        </div>
     </div>
 
 </div>

@@ -51,16 +51,19 @@ var User = sequelizeAdapter.define('user_access_tokens', {
   job_title: { type: Sequelize.STRING },
   email: { type: Sequelize.STRING },
   expires_in: { type: Sequelize.DATE },
-  ext_expires_in: { type: Sequelize.STRING },
   scope: { type: Sequelize.STRING },
-  token_type: { type: Sequelize.STRING },
   access_token: { type: Sequelize.TEXT },
-  id_token: { type: Sequelize.TEXT },
   refresh_token: { type: Sequelize.TEXT },
+  id_token: { type: Sequelize.TEXT },
   is_active:  { type: Sequelize.BOOLEAN, defaultValue: false },
 });
 
 
+
+var AuthAttempt = sequelizeAdapter.define('auth_attempt', {
+  id: { type: Sequelize.DataTypes.UUID, defaultValue: Sequelize.DataTypes.UUIDV1, primaryKey: true },
+  type:  { type: Sequelize.STRING },
+});
 
 
 module.exports = {
@@ -68,4 +71,5 @@ module.exports = {
     await promiseDbSync;
   },
   User: new Table(User, promiseDbSync),
+  AuthAttempt: new Table(AuthAttempt, promiseDbSync),
 }

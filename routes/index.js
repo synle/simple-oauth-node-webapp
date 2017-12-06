@@ -1,28 +1,7 @@
-const unirest = require('unirest');
-const daoResourceUtil = require('../libs/daoResourceUtil');
+const resourceUtil = require('../libs/resourceUtil');
 const util = require('../libs/util');
-
-const O365_APP_ID = process.env.O365_APP_ID;
-const O365_SCOPE_ACCESS = process.env.O365_SCOPE_ACCESS;
-const O365_APP_SECRET = process.env.O365_APP_SECRET;
-const O365_TOKEN_REDIRECT_URL = process.env.O365_TOKEN_REDIRECT_URL;
-const O365_AUTH_SERVER = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?';
-const O365_STATE = 'app_init';
-
-function _getOAuthLoginUrl(){
-    const response_type = 'code';
-    const response_mode = 'query';
-
-    const url = O365_AUTH_SERVER +
-        "response_type=" + encodeURI(response_type) + "&" +
-        "client_id=" + encodeURI(O365_APP_ID) + "&" +
-        "scope=" + encodeURI(O365_SCOPE_ACCESS) + "&" +
-        "redirect_uri=" + encodeURI(O365_TOKEN_REDIRECT_URL) + "&" +
-        "response_mode=" + encodeURI(response_mode) + "&" +
-        "state=" + encodeURI(O365_STATE);
-
-    return url;
-}
+const o365AuthUtil = require('../libs/o365AuthUtil');
+const googleAuthUtil = require('../libs/googleAuthUtil');
 
 
 // route definitions...
@@ -36,7 +15,8 @@ module.exports = function(app, passport){
         res.render(
             'index',
             {
-                loginUrl: _getOAuthLoginUrl(),
+                o365LoginUrl: o365AuthUtil.getOAuthLoginUrl(),
+                googleLoginUrl: googleAuthUtil.getOAuthLoginUrl(),
             }
         );
     });
@@ -46,11 +26,11 @@ module.exports = function(app, passport){
     // post - process login ajax
     app.get('/login/o365', async function(req, res) {
         try{
-            const {code} = req.query;
-            const access_token_response = await daoResourceUtil.getAccessTokenFromO365ByCode('authorization_code', code);
+            const {code, state} = req.query;
+            const access_token_response = await o365AuthUtil.getAccessToken('authorization_code', code);
 
             // persist the token
-            const userObject = await daoResourceUtil.createAccessTokenForOffice365(
+            const userObject = await resourceUtil.upsertO365AccessToken(
                 'refresh_token',
                 access_token_response.refresh_token
             );
@@ -58,8 +38,26 @@ module.exports = function(app, passport){
             // persist sessions...
             req.session.email = userObject.email
             req.session.displayName = userObject.display_name
-            req.session.accessToken = userObject.access_token
-            req.session.refreshToken = userObject.refresh_token
+
+            // ready to go...
+            res.redirect('/main')
+        } catch(e){
+            console.error('Server Error', e);
+            res.status(500)
+                .send('Invalid Code... Please try again...' + e)
+        }
+    });
+
+
+    app.get('/login/google', async function(req, res) {
+        try{
+            const {code, state} = req.query;
+            const userObject = await resourceUtil.upsertGoogleAccessToken(code);
+
+
+            // persist sessions...
+            req.session.email = userObject.email
+            req.session.displayName = userObject.display_name
 
             // ready to go...
             res.redirect('/main')
@@ -76,10 +74,10 @@ module.exports = function(app, passport){
         res.render(
             'main',
             {
-                client_id: O365_APP_ID,
+                o365_client_id: o365AuthUtil.getAppId(),
+                google_client_id: googleAuthUtil.getAppId(),
                 email: req.session.email,
                 displayName: req.session.displayName,
-                access_token: req.session.accessToken,
             }
         );
     })
@@ -101,12 +99,9 @@ module.exports = function(app, passport){
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on
-    const email = req.session.email || '';
-    const displayName = req.session.displayName || '';
-    const accessToken = req.session.accessToken || '';
-    const refreshToken = req.session.refreshToken || '';
+    const {email, displayName} = req.session;
 
-    if(email&& accessToken){
+    if(email&& displayName){
         return next();
     }
 

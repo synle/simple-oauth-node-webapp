@@ -29,6 +29,13 @@
             <div class="text-center">
                 <a href="/logout">Log Out</a>
             </div>
+
+
+
+            <div style="margin-top: 20px;">
+                <h4>Google AppId: {{google_client_id}}</h4>
+                <h4>O365 AppId: {{o365_client_id}}</h4>
+            </div>
         </div>
     </div>
 </div>
