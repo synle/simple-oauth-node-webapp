@@ -111,10 +111,10 @@ function isLoggedIn(req, res, next) {
         // if they aren't redirect them to the home page
         return res.redirect('/');
     } else {
-        res.json({
+        res.status(403)
+            .json({
                 success: false,
                 error: 'Unauthorized',
             })
-            .status(403)
     }
 }
